@@ -1,17 +1,16 @@
 import googleapiclient.discovery
 import os
 import dotenv
-import getpass
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.prompts import PromptTemplate
+import requests
 
-def classify_the_comment(comment):
-    if "GOOGLE_API_KEY" not in os.environ:
-        os.environ["GOOGLE_API_KEY"] = getpass.getpass("Provide your Google API Key")
-    llm = ChatGoogleGenerativeAI(model="gemini-pro")
-    prompt = PromptTemplate.from_template("classify this comment {cmt} base on these clases [remark,postive commet,negative comment]")
-    result = llm.batch(prompt.format(cmt=comment))
-    return result
+
+def classify_the_comment(payload):
+    API_URL = "https://api-inference.huggingface.co/models/martin-ha/toxic-comment-model"
+    headers = {"Authorization": os.getenv("hugging_face_key")}
+    response = requests.post(API_URL, headers=headers, json=payload)
+    return response.json()
+
+
 def Get_comments():
     dotenv.load_dotenv()
 
@@ -30,10 +29,7 @@ def Get_comments():
 if __name__ == "__main__":
     comments = Get_comments()
     for comment in comments:
-        try:
-            cmt = comment["snippet"]["topLevelComment"]["snippet"]["textDisplay"]
-            class_cmt = classify_the_comment(cmt)
-            print(f"{cmt} : {class_cmt}")
-        except:
-            print(str(cmt)+" harmfull")    
+        cmt = comment["snippet"]["topLevelComment"]["snippet"]["textDisplay"]
+        class_cmt = classify_the_comment({"inputs":cmt,})
+        print(f"{cmt} : {class_cmt}")
 # start using openai
