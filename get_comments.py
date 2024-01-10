@@ -12,7 +12,7 @@ def classify_comment(payload):
     return response.json()
 
 
-def Get_comments():
+def Get_comments(limit_number,videoid):
     dotenv.load_dotenv()
 
     api_service_name = "youtube"
@@ -22,7 +22,7 @@ def Get_comments():
     youtube = googleapiclient.discovery.build(
         api_service_name, api_version, developerKey = DEVELOPER_KEY)
 
-    request = youtube.commentThreads().list(part="snippet",videoId="Hnjr7o-HNx8",maxResults=10)
+    request = youtube.commentThreads().list(part="snippet",videoId=videoid,maxResults=limit_number)
     response = request.execute()
     return response["items"]
 
@@ -45,7 +45,8 @@ def organise_comments(comments):
 
 
 if __name__ == "__main__":
-    comments = Get_comments()
+    videoid = "AKxPIWTQYys"
+    comments = Get_comments(100,videoid)
     df = organise_comments(comments)
     df.to_csv("comments.csv",index=False)
 # start using openai
