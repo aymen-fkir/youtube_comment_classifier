@@ -22,8 +22,8 @@ def Get_comments(limit_number,videoid):
         cmt = emoji.demojize(cmt)
         cmts.append(cmt)
     return cmts
-
-videoid = "AKxPIWTQYys"
-cmts = Get_comments(10,videoid)
-df = pd.DataFrame(cmts,columns=["comments"])
-df.to_csv("comments.csv",index=False)
+if __name__ == "__main__":
+    videoid = "AKxPIWTQYys"
+    cmts = Get_comments(10,videoid)
+    df = pd.DataFrame(cmts,columns=["comments"])
+    df.to_csv("comments.csv",index=False)

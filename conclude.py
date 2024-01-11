@@ -12,6 +12,7 @@ def get_conclusion(df):
     conclusion = pandas_ai.chat("summirse this and focus on the most import remarks")
     return conclusion
 
-df = pd.read_csv("comments.csv")
-conclu = get_conclusion(df)
-print(conclu)
+if __name__ == "__main__":
+    df = pd.read_csv("comments.csv")
+    conclu = get_conclusion(df)
+    print(conclu)
