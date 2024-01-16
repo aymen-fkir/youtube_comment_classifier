@@ -30,7 +30,7 @@ def organise_comments(comments):
 
 if __name__ == "__main__":
     comments = pd.read_csv("comments.csv")
-    comments = comments["comments"].tolist()
+    comments = comments["comment"].tolist()
     df = organise_comments(comments)
-    df.to_csv("comments.csv",index=False)
+    df.to_csv("comments.csv")
 # start using openai
